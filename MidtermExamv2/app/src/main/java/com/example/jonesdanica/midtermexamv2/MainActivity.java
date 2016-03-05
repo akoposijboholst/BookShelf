@@ -6,22 +6,26 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.jonesdanica.midtermexamv2.adapters.BookAdapter;
 import com.example.jonesdanica.midtermexamv2.apis.BookApi;
 import com.example.jonesdanica.midtermexamv2.constants.Constants;
 import com.example.jonesdanica.midtermexamv2.entities.Book;
+import com.example.jonesdanica.midtermexamv2.fragments.SearchAlertDialog;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class MainActivity extends AppCompatActivity implements SearchAlertDialog.OnDataPass, AdapterView.OnItemClickListener {
     private ListView mListView;
     private ProgressBar mProgressBar;
     private TextView mtvProgress;
@@ -29,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private BookAdapter adapter;
     private FloatingActionButton fab;
     private ArrayList<Book> bookArrayList = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +54,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             }
         });
         findViews();
-        new FetchBookTask().execute();
     }
 
     public void findViews() {
@@ -60,6 +64,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         mListView.setOnItemClickListener(this);
 
         //mListView.setAdapter(adapter);
+        FetchBookTaskExecute();
+    }
+
+    protected void FetchBookTaskExecute(String... params) {
+        new FetchBookTask().execute(params);
+    }
+
+    @Override
+    public void onDataPass(String... data) {
+        FetchBookTaskExecute(data);
     }
 
     public class FetchBookTask extends AsyncTask<String, Void, ArrayList<Book>> {
@@ -73,19 +87,27 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
 
         @Override
-        protected  ArrayList<Book> doInBackground(String... params) {
+        protected ArrayList<Book> doInBackground(String... params) {
+            if (params.length != 0) {
+                if (params[0] == "Genre") {
+                    Log.d("FaloHalo", params[1]);
+                    return BookApi.getBookGenre(params[1]);
+                } else {
+                    return BookApi.getBookAuthor(params[1]);
+                }
+            }
             return BookApi.getBook();
         }
 
         @Override
-        protected void onPostExecute( ArrayList<Book> bookList) {
+        protected void onPostExecute(ArrayList<Book> bookList) {
 
             bookArrayList = bookList;
             mProgressBar.setVisibility(View.GONE);
             mtvProgress.setVisibility(View.GONE);
             fab.setVisibility(View.VISIBLE);
 
-            if (bookList!=null) {
+            if (!bookList.isEmpty()) {
                 adapter = new BookAdapter(
                         MainActivity.this,
                         R.layout.list_item, bookList);
@@ -93,8 +115,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 mListView.setAdapter(adapter);
                 mListView.setVisibility(View.VISIBLE);
                 //adapter.addAll(bookList);
-            }
-            else {
+                Log.d("Convince Me", "Convince");
+            } else {
+                Log.d("Im Empty", "Im Ampety");
                 mtvEmpty.setVisibility(View.VISIBLE);
             }
         }
@@ -104,6 +127,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Intent intent = new Intent(this, BookDetailsActivity.class);
         intent.putExtra(Constants.EXTRA_POSITION, bookArrayList.get(position).getId());
+        intent.putExtra(Constants.EXTRA_ACTION, Constants.VIEW_BOOKDETAIL);
         startActivity(intent);
     }
 
@@ -116,17 +140,21 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_refresh) {
-            new FetchBookTask().execute();
+            FetchBookTaskExecute();
             return true;
         } else if (id == R.id.action_search) {
-
+            SearchAlertDialog searchAlertDialog = new SearchAlertDialog();
+            searchAlertDialog.show(getFragmentManager(), "Search Dialog");
+//            if (!searchAlertDialog.isInLayout()) {
+////            String searchBy = searchAlertDialog.getItemSelected();
+////            String toQuery = searchAlertDialog.getInputtedItem();
+//                String searchBy = searchAlertDialog.query;
+//                String toQuery = searchAlertDialog.toQuery;
+//                Log.d("Passed", searchBy + toQuery);
+//                FetchBookTaskExecute(new String[]{searchBy, toQuery});
+//            }
         }
 
         return super.onOptionsItemSelected(item);

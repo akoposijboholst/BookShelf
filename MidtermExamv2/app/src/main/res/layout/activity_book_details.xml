@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bookDetails"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
@@ -12,39 +12,53 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.jonesdanica.midtermexamv2.BookDetailsActivity">
 
-    <FrameLayout
-        android:id="@+id/fragmentContainer"
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/fragmentContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-
-    <EditText
-        android:id="@+id/etTitle"
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Title"/>
+        android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/etGenre"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Genre"/>
+        <EditText
+            android:id="@+id/etTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/tv_title" />
+    </android.support.design.widget.TextInputLayout>
 
-    <EditText
-        android:id="@+id/etAuthor"
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Author"/>
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/etGenre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/tv_genre" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/etAuthor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/tv_author" />
+    </android.support.design.widget.TextInputLayout>
 
     <CheckBox
         android:id="@+id/cbIsRead"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Has been read?"/>
+        android:layout_gravity="start"
+        android:text="@string/cb_isRead" />
 
 
 </LinearLayout>

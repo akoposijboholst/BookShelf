@@ -15,4 +15,8 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="tv_title">Title</string>
+    <string name="tv_genre">Genre</string>
+    <string name="tv_author">Author</string>
+    <string name="cb_isRead">Has been read?</string>
 </resources>

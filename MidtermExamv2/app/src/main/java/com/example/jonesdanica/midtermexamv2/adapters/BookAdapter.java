@@ -41,7 +41,7 @@ public class BookAdapter extends ArrayAdapter<Book> {
 
             // create the view holder
             viewHolder = new ViewHolder();
-            viewHolder.tvBookTitle = (TextView) convertView.findViewById(R.id.bookname);
+            viewHolder.tvBookTitle = (TextView) convertView.findViewById(R.id.bookName);
 
             convertView.setTag(viewHolder);
         } else {

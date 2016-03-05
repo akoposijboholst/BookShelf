@@ -1,11 +1,9 @@
 package com.example.jonesdanica.midtermexamv2;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -24,12 +22,13 @@ import com.example.jonesdanica.midtermexamv2.entities.Book;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
-
     private ListView mListView;
     private ProgressBar mProgressBar;
     private TextView mtvProgress;
     private TextView mtvEmpty;
     private BookAdapter adapter;
+    private FloatingActionButton fab;
+    private ArrayList<Book> bookArrayList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,17 +39,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         setSupportActionBar(toolbar);
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getParent(), BookDetailsActivity.class);
-                startActivityForResult(intent, 1);
+                Intent intent = new Intent(MainActivity.this, BookDetailsActivity.class);
+                intent.putExtra(Constants.EXTRA_ACTION, Constants.ADD_BOOKDETAIL);
+                startActivity(intent);
             }
         });
-
         findViews();
-
         new FetchBookTask().execute();
     }
 
@@ -70,36 +68,30 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             mProgressBar.setVisibility(View.VISIBLE);
             mtvProgress.setVisibility(View.VISIBLE);
             mtvEmpty.setVisibility(View.GONE);
+            fab.setVisibility(View.GONE);
+            mListView.setVisibility(View.GONE);
         }
 
         @Override
         protected  ArrayList<Book> doInBackground(String... params) {
-            //URI-based Retrieval
-            Uri builtUri = Uri.parse(BookApi.BASE_URL).buildUpon()
-                    .appendEncodedPath("api")
-                    .appendEncodedPath("books")
-                    .build();
-
-            return BookApi.getBook(builtUri, "GET");
-
-            // String-based Retrieval
-            /*
-             * String url = BookAPI.BASE_URL + "api/books";
-             * return BookAPI.getBook(url, "GET");
-            */
+            return BookApi.getBook();
         }
 
         @Override
         protected void onPostExecute( ArrayList<Book> bookList) {
 
+            bookArrayList = bookList;
             mProgressBar.setVisibility(View.GONE);
             mtvProgress.setVisibility(View.GONE);
+            fab.setVisibility(View.VISIBLE);
 
             if (bookList!=null) {
                 adapter = new BookAdapter(
                         MainActivity.this,
                         R.layout.list_item, bookList);
+
                 mListView.setAdapter(adapter);
+                mListView.setVisibility(View.VISIBLE);
                 //adapter.addAll(bookList);
             }
             else {
@@ -111,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Intent intent = new Intent(this, BookDetailsActivity.class);
-        intent.putExtra(Constants.EXTRA_POSITION, position);
+        intent.putExtra(Constants.EXTRA_POSITION, bookArrayList.get(position).getId());
         startActivity(intent);
     }
 
@@ -133,6 +125,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         if (id == R.id.action_refresh) {
             new FetchBookTask().execute();
             return true;
+        } else if (id == R.id.action_search) {
+
         }
 
         return super.onOptionsItemSelected(item);

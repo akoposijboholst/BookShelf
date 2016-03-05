@@ -1,9 +1,12 @@
 package com.example.jonesdanica.midtermexamv2.entities;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by danica12 on 3/3/2016.
  */
-public class Book {
+public class Book{
     private String id;
     private String title;
     private String genre;
@@ -76,4 +79,6 @@ public class Book {
                 ", isRead=" + isRead +
                 '}';
     }
+
+
 }

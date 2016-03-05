@@ -207,4 +207,15 @@ public class BookApi {
         }
     }
 
+    public static void deleteBook(Book book) {
+        Uri uri = Uri.parse(BookApi.BASE_URL).buildUpon()
+                .appendEncodedPath("api")
+                .appendEncodedPath("books")
+                .appendPath(book.getId())
+                .build();
+        Log.d("Delete", uri.toString());
+        HttpUtils.DELETE(uri);
+//            Log.d("POST_RESPONSE", HttpUtils.POST(uri, jsonObject));
+    }
+
 }

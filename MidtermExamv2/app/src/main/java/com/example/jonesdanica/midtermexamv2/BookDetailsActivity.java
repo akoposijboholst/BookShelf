@@ -97,8 +97,6 @@ public class BookDetailsActivity extends AppCompatActivity {
 
         @Override
         protected Book doInBackground(String... params) {
-//            getFragmentManager().beginTransaction()
-//                    .replace(R.id.fragmentContainer, new GetBookDataFragment()).commit();
             return BookApi.getCertainBook(bookID);
         }
 
@@ -154,6 +152,7 @@ public class BookDetailsActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        Book book = mBook;
         //noinspection SimplifiableIfStatement
         if (id == R.id.toggle_edit_ok) {
             if(toggle){
@@ -164,7 +163,6 @@ public class BookDetailsActivity extends AppCompatActivity {
                 mcbIsRead.setEnabled(true);
             }else{
                 item.setIcon(R.drawable.ic_edit);
-                Book book = mBook;
                 book.setTitle(mtvTitle.getText().toString());
                 book.setGenre(mtvGenre.getText().toString());
                 book.setAuthor(mtvAuthor.getText().toString());
@@ -176,6 +174,7 @@ public class BookDetailsActivity extends AppCompatActivity {
             //back to MainActivity
             return true;
         } else if (id == R.id.action_delete) {
+            BookApi.deleteBook(book);
             //delete book item
             //back to MainActivity
             return true;

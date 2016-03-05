@@ -7,7 +7,9 @@
 
     <item
         android:id="@android:id/home"
-        android:title="Back"/>
+        android:icon="@drawable/ic_keyboard_arrow_left_white_24dp"
+        android:title="Back"
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/action_ok"

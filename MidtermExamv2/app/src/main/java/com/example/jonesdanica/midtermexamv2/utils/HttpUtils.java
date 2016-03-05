@@ -1,5 +1,7 @@
 package com.example.jonesdanica.midtermexamv2.utils;
 
+
+
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
@@ -17,9 +19,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- * Created by danica12 on 3/3/2016.
+ * A utility class that handles all Http related calls and services.
  */
 public class HttpUtils {
+
     private static final String LOG_TAG = HttpUtils.class.getSimpleName();
 
     /**

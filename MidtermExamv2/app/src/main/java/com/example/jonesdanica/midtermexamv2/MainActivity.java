@@ -11,21 +11,20 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.jonesdanica.midtermexamv2.adapters.BookAdapter;
 import com.example.jonesdanica.midtermexamv2.apis.BookApi;
 import com.example.jonesdanica.midtermexamv2.constants.Constants;
 import com.example.jonesdanica.midtermexamv2.entities.Book;
-import com.example.jonesdanica.midtermexamv2.fragments.SearchAlertDialog;
+import com.example.jonesdanica.midtermexamv2.fragments.SearchFragment;
+import com.example.jonesdanica.midtermexamv2.interfaces.OnDataPass;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements SearchAlertDialog.OnDataPass, AdapterView.OnItemClickListener {
+public class MainActivity extends AppCompatActivity implements OnDataPass, AdapterView.OnItemClickListener {
     private ListView mListView;
     private ProgressBar mProgressBar;
     private TextView mtvProgress;
@@ -62,18 +61,11 @@ public class MainActivity extends AppCompatActivity implements SearchAlertDialog
         mProgressBar = (ProgressBar) findViewById(R.id.progressbar);
         mListView = (ListView) findViewById(R.id.list);
         mListView.setOnItemClickListener(this);
-
-        //mListView.setAdapter(adapter);
         FetchBookTaskExecute();
     }
 
     protected void FetchBookTaskExecute(String... params) {
         new FetchBookTask().execute(params);
-    }
-
-    @Override
-    public void onDataPass(String... data) {
-        FetchBookTaskExecute(data);
     }
 
     public class FetchBookTask extends AsyncTask<String, Void, ArrayList<Book>> {
@@ -107,17 +99,20 @@ public class MainActivity extends AppCompatActivity implements SearchAlertDialog
             mtvProgress.setVisibility(View.GONE);
             fab.setVisibility(View.VISIBLE);
 
-            if (!bookList.isEmpty()) {
-                adapter = new BookAdapter(
+            if (bookList!=null) {
+
+                if (!bookList.isEmpty()) {
+                    bookArrayList = bookList;
+                    adapter = new BookAdapter(
                         MainActivity.this,
                         R.layout.list_item, bookList);
 
-                mListView.setAdapter(adapter);
-                mListView.setVisibility(View.VISIBLE);
-                //adapter.addAll(bookList);
-                Log.d("Convince Me", "Convince");
+                    mListView.setAdapter(adapter);
+                    mListView.setVisibility(View.VISIBLE);
+                } else {
+                    mtvEmpty.setVisibility(View.VISIBLE);
+                }
             } else {
-                Log.d("Im Empty", "Im Ampety");
                 mtvEmpty.setVisibility(View.VISIBLE);
             }
         }
@@ -129,6 +124,11 @@ public class MainActivity extends AppCompatActivity implements SearchAlertDialog
         intent.putExtra(Constants.EXTRA_POSITION, bookArrayList.get(position).getId());
         intent.putExtra(Constants.EXTRA_ACTION, Constants.VIEW_BOOKDETAIL);
         startActivity(intent);
+    }
+
+    @Override
+    public void onDataPass(String... data) {
+        FetchBookTaskExecute(data);
     }
 
     @Override
@@ -145,18 +145,9 @@ public class MainActivity extends AppCompatActivity implements SearchAlertDialog
             FetchBookTaskExecute();
             return true;
         } else if (id == R.id.action_search) {
-            SearchAlertDialog searchAlertDialog = new SearchAlertDialog();
-            searchAlertDialog.show(getFragmentManager(), "Search Dialog");
-//            if (!searchAlertDialog.isInLayout()) {
-////            String searchBy = searchAlertDialog.getItemSelected();
-////            String toQuery = searchAlertDialog.getInputtedItem();
-//                String searchBy = searchAlertDialog.query;
-//                String toQuery = searchAlertDialog.toQuery;
-//                Log.d("Passed", searchBy + toQuery);
-//                FetchBookTaskExecute(new String[]{searchBy, toQuery});
-//            }
+            SearchFragment searchFragment = new SearchFragment();
+            searchFragment.show(getFragmentManager(), "Search Dialog");
         }
-
         return super.onOptionsItemSelected(item);
     }
 }

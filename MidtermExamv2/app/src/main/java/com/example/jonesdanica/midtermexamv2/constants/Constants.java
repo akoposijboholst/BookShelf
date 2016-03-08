@@ -11,4 +11,5 @@ public class Constants {
     public static final int VIEW_BOOKDETAIL = 1;
     public static final int ADD_BOOKDETAIL = 2;
     public static final int EDIT_BOOKDETAIL = 3;
+    public static final int DELETE_BOOKDETAIL = 4;
 }

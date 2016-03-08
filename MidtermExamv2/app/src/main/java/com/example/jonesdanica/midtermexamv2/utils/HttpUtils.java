@@ -194,6 +194,7 @@ public class HttpUtils {
      * @return the JSON response data in String format
      */
     private static String PLACE(String sUrl, String requestMethod, JSONObject json) {
+        Log.d("Totoy", "hahaha");
         HttpURLConnection urlConnection;
 
         try {
@@ -207,16 +208,14 @@ public class HttpUtils {
 
             // Write
             OutputStream outputStream = urlConnection.getOutputStream();
-            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
-                    outputStream, "UTF-8"));
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
             writer.write(json.toString());
             writer.close();
             outputStream.close();
 
             // Read
             InputStream inputStream = urlConnection.getInputStream();
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(
-                    inputStream, "UTF-8"));
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
             String line;
             StringBuffer buffer = new StringBuffer();
 

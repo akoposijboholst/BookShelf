@@ -171,7 +171,7 @@ public class BookApi {
         try {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put(TAG_NEWBOOK, book);
-            Log.d("POST_RESPONSE", HttpUtils.POST(uri, jsonObject));
+            HttpUtils.POST(uri, jsonObject);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -191,7 +191,6 @@ public class BookApi {
             jsonObject.put("author", book.getAuthor());
             jsonObject.put("isRead", book.isRead());
             HttpUtils.PATCH(uri, jsonObject);
-//            Log.d("PUT", HttpUtils.PUT(uri, jsonObject));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -215,7 +214,6 @@ public class BookApi {
                 .build();
         Log.d("Delete", uri.toString());
         HttpUtils.DELETE(uri);
-//            Log.d("POST_RESPONSE", HttpUtils.POST(uri, jsonObject));
     }
 
 }

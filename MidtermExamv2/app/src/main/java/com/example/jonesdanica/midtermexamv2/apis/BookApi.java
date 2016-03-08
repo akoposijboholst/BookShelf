@@ -1,7 +1,6 @@
 package com.example.jonesdanica.midtermexamv2.apis;
 
 import android.net.Uri;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -74,7 +73,6 @@ public class BookApi {
         }
         try {
             JSONObject basic = new JSONObject(json);
-//            int code = basic.getInt("code");
             JSONObject obj = basic.getJSONObject("result");
             Log.d("PRETTY_ME", obj.toString());
             String json_id = obj.getString(TAG_ID),
@@ -191,16 +189,6 @@ public class BookApi {
             jsonObject.put("author", book.getAuthor());
             jsonObject.put("isRead", book.isRead());
             HttpUtils.PATCH(uri, jsonObject);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void searchBook(Uri uri, Book book) {
-        try {
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put(TAG_NEWBOOK, book);
-            Log.d("POST_RESPONSE", HttpUtils.POST(uri, jsonObject));
         } catch (JSONException e) {
             e.printStackTrace();
         }

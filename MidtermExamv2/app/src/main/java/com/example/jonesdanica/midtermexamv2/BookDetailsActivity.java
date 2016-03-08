@@ -41,13 +41,6 @@ public class BookDetailsActivity extends AppCompatActivity {
                 break;
             }
             case Constants.EDIT_BOOKDETAIL: {
-                /*if (getSupportActionBar() != null) {
-                    getSupportActionBar().setTitle(mBook.getTitle());
-                }
-                mBook = intent.getParcelableExtra(Constants.EXTRA_POSITION);
-                if (mBook == null) {
-                    throw new NullPointerException("No book found at the passed position.");
-                }*/
                 if (getSupportActionBar() != null) {
                     new FetchBookTask().execute();
                 }
@@ -84,25 +77,25 @@ public class BookDetailsActivity extends AppCompatActivity {
                 case Constants.VIEW_BOOKDETAIL: {
                     bundle.putInt(Constants.EXTRA_ACTION, Constants.VIEW_BOOKDETAIL);
                     mFragment.setArguments(bundle);
-                    mFragment.show(getFragmentManager(), "Halo");
+                    mFragment.show(getFragmentManager(), "Fragment");
                     break;
                 }
                 case Constants.EDIT_BOOKDETAIL: {
                     bundle.putInt(Constants.EXTRA_ACTION, Constants.EDIT_BOOKDETAIL);
                     mFragment.setArguments(bundle);
-                    mFragment.show(getFragmentManager(), "Halo");
+                    mFragment.show(getFragmentManager(), "Fragment");
                     break;
                 }
                 case Constants.DELETE_BOOKDETAIL: {
                     bundle.putInt(Constants.EXTRA_ACTION, Constants.DELETE_BOOKDETAIL);
                     mFragment.setArguments(bundle);
-                    mFragment.show(getFragmentManager(), "Halo");
+                    mFragment.show(getFragmentManager(), "Fragment");
                     break;
                 }
                 case Constants.ADD_BOOKDETAIL: {
                     bundle.putInt(Constants.EXTRA_ACTION, Constants.ADD_BOOKDETAIL);
                     mFragment.setArguments(bundle);
-                    mFragment.show(getFragmentManager(), "Halo");
+                    mFragment.show(getFragmentManager(), "Fragment");
                     break;
                 }
             }

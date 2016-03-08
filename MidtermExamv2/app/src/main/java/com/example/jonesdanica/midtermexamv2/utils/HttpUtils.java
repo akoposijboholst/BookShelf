@@ -194,7 +194,6 @@ public class HttpUtils {
      * @return the JSON response data in String format
      */
     private static String PLACE(String sUrl, String requestMethod, JSONObject json) {
-        Log.d("Totoy", "hahaha");
         HttpURLConnection urlConnection;
 
         try {

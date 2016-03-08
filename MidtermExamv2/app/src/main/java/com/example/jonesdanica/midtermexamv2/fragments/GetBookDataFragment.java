@@ -2,11 +2,9 @@ package com.example.jonesdanica.midtermexamv2.fragments;
 
 import android.app.DialogFragment;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
 import android.widget.TextView;
 
 import com.example.jonesdanica.midtermexamv2.R;
@@ -29,7 +27,6 @@ public class GetBookDataFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_getbook, container, false);
         mTextView = (TextView)view.findViewById(R.id.tvGetBookData);
 
@@ -45,6 +42,9 @@ public class GetBookDataFragment extends DialogFragment {
             case Constants.DELETE_BOOKDETAIL:{
                 mTextView.setText("Deleting book...");
                 break;
+            }
+            case Constants.ADD_BOOKDETAIL:{
+                mTextView.setText("Adding books...");
             }
         }
         return view;
